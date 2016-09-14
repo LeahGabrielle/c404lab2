@@ -1,4 +1,5 @@
 import socket
+import os
 
 #Allocate a new socket
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,7 +15,8 @@ while True:
     client, address = server.accept()
     print "Connected"
     print address
-
+    
+    pid = os.fork()
     if (pid == 0): # we are in the child process
 
         #client is going to be curl, web browser or something like that
@@ -29,19 +31,19 @@ while True:
     	         if exception.errno == 11:
 	           part = None
 	      else:
-	         raise
-              if (part is not None and len(part) == 0):
-                 exit(0)
-              if (part):
-       	        print "< " + part
-                outgoing.sendall(part)
-              try:
-	        part = outgoing.recv(1024)
-              except socket.error, exception:
-    	        if exception.errno == 11:
-	           part = None
-	        else:
 	           raise
+              if (part is not None and len(part) == 0):
+                   exit(0)
+              if (part):
+       	           print "< " + part
+                   outgoing.sendall(part)
+              try:
+	           part = outgoing.recv(1024)
+              except socket.error, exception:
+    	           if exception.errno == 11:
+	              part = None
+	           else:
+	              raise
               if (part is not None and len(part) == 0):
                    exit(0)
               if (part):
