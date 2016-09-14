@@ -30,7 +30,7 @@ while True:
        	      except socket.error, exception:
     	         if exception.errno == 11:
 	           part = None
-	      else:
+	         else:
 	           raise
               if (part is not None and len(part) == 0):
                    exit(0)
